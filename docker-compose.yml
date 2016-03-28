@@ -2,13 +2,13 @@ version: '2'
 
 services:
   lb:
-    build: .
+    image: hanzel/load-balancing-swarm
     container_name: lb
     ports:
       - "80:80"
     environment:
       - APP_NAME=tutum-nodejs-redis
-      - CONSUL_URL=$(docker-machine ip consul):8500
+      - CONSUL_URL=${CONSUL_IP}:8500
     depends_on:
       - web
     networks:

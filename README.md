@@ -4,11 +4,11 @@ docker-machine create --driver virtualbox consul
 
 docker run -d -p "8500:8500" -h "consul" progrium/consul -server -bootstrap
 
-docker-machine create --driver virtualbox --swarm --swarm-master --swarm-discovery consul://192.168.99.100:8500/ swarm-master
+docker-machine create -d virtualbox  --swarm --swarm-master --swarm-discovery="consul://$(docker-machine ip consul):8500"  --engine-opt="cluster-store=consul://$(docker-machine ip consul):8500" --engine-opt="cluster-advertise=eth1:2376" swarm-master
 
-docker-machine create --driver virtualbox --swarm --swarm-discovery consul://192.168.99.100:8500/ swarm1
+docker-machine create -d virtualbox  --swarm --swarm-discovery="consul://$(docker-machine ip consul):8500"  --engine-opt="cluster-store=consul://$(docker-machine ip consul):8500" --engine-opt="cluster-advertise=eth1:2376" swarm1
 
-docker-machine create --driver virtualbox --swarm --swarm-discovery consul://192.168.99.100:8500/ swarm2
+docker-machine create -d virtualbox  --swarm --swarm-discovery="consul://$(docker-machine ip consul):8500"  --engine-opt="cluster-store=consul://$(docker-machine ip consul):8500" --engine-opt="cluster-advertise=eth1:2376" swarm2
 
 docker run -d -e constraint:node==swarm-master --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://192.168.99.100:8500/
 
