@@ -4,6 +4,8 @@ docker-machine create --driver virtualbox consul
 
 eval $(docker-machine env consul)
 
+export CONSUL_IP=$(docker-machine ssh consul 'ifconfig eth1 | grep "inet addr:" | cut -d: -f2 | cut -d" " -f1')
+
 docker run -d -p 8500:8500 -h consul --restart always progrium/consul -server -bootstrap
 
 docker-machine create -d virtualbox  --swarm --swarm-master --swarm-discovery="consul://$(docker-machine ip consul):8500"  --engine-opt="cluster-store=consul://$(docker-machine ip consul):8500" --engine-opt="cluster-advertise=eth1:2376" swarm-master
