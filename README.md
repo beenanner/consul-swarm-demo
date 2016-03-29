@@ -2,7 +2,9 @@ Setup
 ---------
 docker-machine create --driver virtualbox consul
 
-docker run -d -p "8500:8500" -h "consul" progrium/consul -server -bootstrap
+eval $(docker-machine env consul)
+
+docker run -d -p 8500:8500 -h consul --restart always progrium/consul -server -bootstrap
 
 docker-machine create -d virtualbox  --swarm --swarm-master --swarm-discovery="consul://$(docker-machine ip consul):8500"  --engine-opt="cluster-store=consul://$(docker-machine ip consul):8500" --engine-opt="cluster-advertise=eth1:2376" swarm-master
 
@@ -10,12 +12,13 @@ docker-machine create -d virtualbox  --swarm --swarm-discovery="consul://$(docke
 
 docker-machine create -d virtualbox  --swarm --swarm-discovery="consul://$(docker-machine ip consul):8500"  --engine-opt="cluster-store=consul://$(docker-machine ip consul):8500" --engine-opt="cluster-advertise=eth1:2376" swarm2
 
-docker run -d -e constraint:node==swarm-master --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://192.168.99.100:8500/
+eval $(docker-machine env -swarm swarm-master)
 
-docker run -d -e constraint:node==swarm1 --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://192.168.99.100:8500/
+docker run -d --name=registrator -e constraint:node==swarm-master --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://$(docker-machine ip consul):8500/
 
-docker run -d -e constraint:node==swarm2 --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://192.168.99.100:8500/
+docker run -d --name=registrator -e constraint:node==swarm1 --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://$(docker-machine ip consul):8500/
 
+docker run -d --name=registrator -e constraint:node==swarm2 --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://$(docker-machine ip consul):8500/
 
 Test
 -------
