@@ -1,5 +1,5 @@
 Setup
-==
+====
 
 Setup service discovery box
 ---------------------------------
@@ -32,8 +32,6 @@ Add registrator to each swarm box
 - eval $(docker-machine env swarm2)
 
 - docker run -d --name=registrator --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://$(docker-machine ip consul):8500/
-
-
 
 Test
 -------
