@@ -23,15 +23,15 @@ Add registrator to each swarm box
 ------------------------------------
 - eval $(docker-machine env swarm-master)
 
-- docker run -d --name=registrator --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://$(docker-machine ip consul):8500/
+- docker run -d --name=registrator -h $(docker-machine ip swarm-master)  --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://$(docker-machine ip consul):8500/
 
 - eval $(docker-machine env swarm1)
 
-- docker run -d --name=registrator --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://$(docker-machine ip consul):8500/
+- docker run -d --name=registrator -h $(docker-machine ip swarm1) --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://$(docker-machine ip consul):8500/
 
 - eval $(docker-machine env swarm2)
 
-- docker run -d --name=registrator --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://$(docker-machine ip consul):8500/
+- docker run -d --name=registrator -h $(docker-machine ip swarm2) --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://$(docker-machine ip consul):8500/
 
 Test
 -------
