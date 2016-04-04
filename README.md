@@ -41,6 +41,8 @@ Test
 
 - docker-compose scale web=3
 
+- Browser: http://192.168.99.101/
+
 - Browser: http://192.168.99.100:8500/ui/#/dc1/kv/docker/swarm/nodes/
 
-- Command line: curl http://192.168.99.101:8500/v1/kv/docker/swarm/nodes/\?recurse
+- Command line: curl http://192.168.99.100:8500/v1/kv/docker/swarm/nodes/\?recurse
