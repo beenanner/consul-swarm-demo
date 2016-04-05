@@ -41,6 +41,8 @@ Test
 
 - docker-compose scale web=3
 
+- docker run -itd --name=web --net=consulswarmdemo_front-tier --env="constraint:node==swarm2" -p 80:80 nginx
+
 - Browser: http://192.168.99.101/
 
 - Browser: http://192.168.99.100:8500/ui/#/dc1/kv/docker/swarm/nodes/
