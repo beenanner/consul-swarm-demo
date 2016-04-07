@@ -1,5 +1,6 @@
 Setup
 ====
+These are the necessary command to create a scalable swarm cluster and demo some of the features of docker.
 
 Setup service discovery box
 ---------------------------------
